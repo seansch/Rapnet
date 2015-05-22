@@ -39,6 +39,12 @@ php artisan vendor:publish
 
 
 ```php
+Rapnet::setDiamondParams(
+    $request->input('diamond_shape'),
+    $request->input('carat_weight'),
+    $request->input('diamond_color'),
+    $request->input('estimated_clarity')
+);
 
-
+$price = Rapnet::getPrice();
 ```

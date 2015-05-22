@@ -8,10 +8,10 @@ class Rapnet {
 
     private $client;
     private $ticket_hash = null;
-    private $shape = null;
-    private $size = null;
-    private $color = null;
-    private $clarity = null;
+    public $shape = null;
+    public $size = null;
+    public $color = null;
+    public $clarity = null;
 
     public function __construct()
     {
@@ -95,10 +95,10 @@ class Rapnet {
         $this->client->__setSoapHeaders($header);
 
         $this->client->GetPrice([
-            $this->shape,
-            $this->size,
-            $this->color,
-            $this->clarity
+            'shape' => $this->shape,
+            'size' => $this->size,
+            'color' =>$this->color,
+            'clarity' =>$this->clarity
         ]);
 
         $price_result = $this->client->__getLastResponse();

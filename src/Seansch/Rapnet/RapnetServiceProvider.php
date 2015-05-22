@@ -32,7 +32,7 @@ class RapnetServiceProvider extends ServiceProvider {
 	public function register()
 	{
         $this->app->bind('rapnet', function(){
-            return new Rapnet;
+            return new \Seansch\Rapnet\Rapnet();
         });
 	}
 
@@ -42,7 +42,6 @@ class RapnetServiceProvider extends ServiceProvider {
      * @return array
      */
     public function provides() {
-        return array("Rapnet");
+        return array('Seansch\Rapnet\Rapnet');
     }
-
 }
