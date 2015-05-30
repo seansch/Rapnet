@@ -24,10 +24,8 @@ class Rapnet {
      */
     private function login()
     {
-        $this->ticket_hash = Cache::get('rap_auth_token');
-
-        if ($this->ticket_hash === null) {
-            // Login to the SOAP API
+	$this->ticket_hash = Cache::remember('rap_auth_token', 45, function(){
+	     // Login to the SOAP API
             $this->client->Login(['Username' => config('rapnet.user'), 'Password' => config('rapnet.password')]);
 
             // Parse Auth Ticket out of response
@@ -35,11 +33,8 @@ class Rapnet {
             $ticket_xml = simplexml_load_string($auth_ticket);
             $ticket_xml->registerXPathNamespace('technet', "http://technet.rapaport.com/");
             $ticket = $ticket_xml->xpath('//technet:Ticket');
-            $this->ticket_hash = (string)$ticket[0];
-
-            // Store auth token for 45 minutes
-            Cache::put('rap_auth_token', $this->ticket_hash, 45);
-        }
+            return (string)$ticket[0];
+	});
     }
 
 
@@ -110,3 +105,4 @@ class Rapnet {
         return $price;
     }
 }
+
