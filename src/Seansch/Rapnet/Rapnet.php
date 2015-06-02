@@ -52,7 +52,7 @@ class Rapnet {
         $shape = ($shape != 'Round' ? 'Pear' : 'Round');
 
         // FL doesn't exist, set to IF, or leave the same
-        $clarity = ($clarity = 'FL' ? 'IF' : $clarity);
+        $clarity = ($clarity == 'FL' ? 'IF' : $clarity);
 
         // Set N or FANCY to M color
         if ($color == "N" || $color == "FANCY") {
