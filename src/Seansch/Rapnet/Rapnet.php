@@ -1,10 +1,13 @@
-<?php namespace Seansch\Rapnet;
+<?php
+
+namespace Seansch\Rapnet;
 
 use SoapClient;
 use SoapHeader;
 use Cache;
 
-class Rapnet {
+class Rapnet
+{
 
     private $client;
     private $ticket_hash = null;
@@ -24,8 +27,9 @@ class Rapnet {
      */
     private function login()
     {
-	$this->ticket_hash = Cache::remember('rap_auth_token', 45, function(){
-	     // Login to the SOAP API
+        // Retrieve auth ticket and cache for 45 minutes (Ticket is valid for only 1 hour)
+        $this->ticket_hash = Cache::remember('rap_auth_token', 45, function () {
+            // Login to the SOAP API
             $this->client->Login(['Username' => config('rapnet.user'), 'Password' => config('rapnet.password')]);
 
             // Parse Auth Ticket out of response
@@ -34,7 +38,7 @@ class Rapnet {
             $ticket_xml->registerXPathNamespace('technet', "http://technet.rapaport.com/");
             $ticket = $ticket_xml->xpath('//technet:Ticket');
             return (string)$ticket[0];
-	});
+        });
     }
 
 
@@ -61,21 +65,21 @@ class Rapnet {
 
         // Anything larger than 9.99 is calculated as 10
         $size = ($size > 9.99 ? 10 : $size);
-        
+
         // Anything between 6 and 9.99 is priced at 5.01
         if (($size > 5.99) && ($size < 10)) {
-        	$size = 5.01;
-        } 
+            $size = 5.01;
+        }
 
         // If Pear shaped and less than .18 carat, set to .18
         if ($shape == "Pear" && $size < 0.18) {
             $size = 0.18;
         }
 
-        $this->shape    = $shape;
-        $this->size     = $size;
-        $this->color    = $color;
-        $this->clarity  = $clarity;
+        $this->shape = $shape;
+        $this->size = $size;
+        $this->color = $color;
+        $this->clarity = $clarity;
     }
 
     /**
@@ -85,7 +89,7 @@ class Rapnet {
      */
     public function getPrice()
     {
-        if($this->clarity == null || $this->shape == null || $this->size == null || $this->color == null) {
+        if ($this->clarity == null || $this->shape == null || $this->size == null || $this->color == null) {
             return false;
         }
 
@@ -97,8 +101,8 @@ class Rapnet {
         $this->client->GetPrice([
             'shape' => $this->shape,
             'size' => $this->size,
-            'color' =>$this->color,
-            'clarity' =>$this->clarity
+            'color' => $this->color,
+            'clarity' => $this->clarity
         ]);
 
         $price_result = $this->client->__getLastResponse();
