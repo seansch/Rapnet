@@ -67,9 +67,9 @@ class Rapnet
         $size = ($size > 9.99 ? 10 : $size);
 
         // Anything between 6 and 9.99 is priced at 5.01
-//        if (($size > 5.99) && ($size < 10)) {
-//            $size = 5.01;
-//        }
+        if (($size > 5.99) && ($size < 10)) {
+            $size = 5.01;
+        }
 
         // If Pear shaped and less than .18 carat, set to .18
         if ($shape == "Pear" && $size < 0.18) {
